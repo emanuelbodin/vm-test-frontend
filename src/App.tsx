@@ -1,10 +1,17 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+  const [ip, setIp] = useState('');
+  const fetchData = async () => {
+    const res = await fetch(`http://${ip}/api/data`);
+    const data = await res.json();
+    setData(data);
+  };
 
   return (
     <>
@@ -17,6 +24,11 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
+      <p>serverData: {JSON.stringify(data)}</p>
+      <div>
+        server ip: <input value={ip} onChange={(e) => setIp(e.target.value)} />
+      </div>
+      <button onClick={fetchData}>fetch data</button>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
@@ -29,7 +41,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
